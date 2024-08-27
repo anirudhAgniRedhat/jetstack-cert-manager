@@ -43,7 +43,7 @@ KO_PLATFORM ?= linux/amd64
 
 ## (optional) Which cert-manager images to build.
 ## @category Experimental/ko
-KO_BINS ?= controller acmesolver cainjector webhook startupapicheck
+KO_BINS ?= controller acmesolver cainjector webhook ctl startupapicheck
 
 ## (optional) Paths of Helm values files which will be supplied to `helm install
 ## --values` flag by make ko-deploy-certmanager.
@@ -87,5 +87,7 @@ ko-deploy-certmanager: $(bin_dir)/cert-manager.tgz $(KO_IMAGE_REFS)
 		--set webhook.image.digest="$(shell $(YQ) .digest $(bin_dir)/scratch/ko/webhook.yaml)" \
 		--set startupapicheck.image.repository="$(shell $(YQ) .repository $(bin_dir)/scratch/ko/startupapicheck.yaml)" \
 		--set startupapicheck.image.digest="$(shell $(YQ) .digest $(bin_dir)/scratch/ko/startupapicheck.yaml)" \
+		--set startupapicheck.image.repository="$(shell $(YQ) .repository $(bin_dir)/scratch/ko/ctl.yaml)" \
+        --set startupapicheck.image.digest="$(shell $(YQ) .digest $(bin_dir)/scratch/ko/ctl.yaml)" \
 		--set crds.enabled=true \
 		--set "extraArgs={--acme-http01-solver-image=$(ACME_HTTP01_SOLVER_IMAGE)}"
